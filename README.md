@@ -347,3 +347,7 @@ powershell -ExecutionPolicy Bypass -File .\reset-all.ps1 -AgentsRoot C:\Vaaradhi
 
 - Demo video: _link coming soon_
 - Blog post: _link coming soon_
+
+## License
+
+MIT. See [LICENSE](LICENSE).
