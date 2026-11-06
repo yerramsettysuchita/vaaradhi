@@ -97,6 +97,7 @@ Newest entries at the bottom. One entry per problem.
 - **What I tried:** Addressing `vaaradhi-evidence` after Switch Console had been quit and reopened.
 - **What broke:** A session lock note was left behind. Windows had reused the old process number (PID) for another process, so the lock looked alive. `vaaradhi-evidence` never started a new session and silently retried every 2 minutes.
 - **Exact error:** None visible in the room. Silent retries every 2 minutes.
+- **Root cause:** switch-buddy traced it on 5 Nov 2026. The stale note recorded a process id that Windows had since given to `vaaradhi-shipper`'s own host process, which was alive, so Switch treated the old session as still running.
 - **How I fixed it:** `switch-buddy` renamed the stale lock note, and the next retry started a session. Lesson: if an agent is silent after a Console restart, suspect a stale lock before re-adding the agent.
 - **Time taken:** _fill in_ (this incident is included in PR-3's review-to-live time in `docs/EVAL.md`)
 
