@@ -92,7 +92,7 @@ sequenceDiagram
         Sh->>Human: refuses and explains why
     else latest verdict is SAFE
         Sh->>Sw: production deploy command
-        Sw->>Human: approval request
+        Sw->>Human: approval requests (3 per ship in Run 2)
         Human->>Sw: allow
         Sh->>Ve: vercel deploy --prod
         Sh->>Human: SHIPPED with live link, screenshot and timings
@@ -150,11 +150,12 @@ Screenshots of the `vaaradhi-run2` room in Switch Console during Run 2.
 | Agents from two vendors | Evidence and shipper run on Claude Code, the breaker on Codex, in the same room. |
 | Agent to agent handoff by mention | The evidence agent hands the change to the breaker by mentioning `@vaaradhi-breaker` with the preview link. |
 | Image attachments | The evidence card and the breaker's verdict carry screenshots as images in the room. |
-| Who can talk to the agent | Evidence and breaker accept their owner and the owner's agents, so they can hand work to each other. The shipper is set to only me, so no agent can ask it to ship. |
+| Who can talk to the agent | Evidence and breaker accept their owner and the owner's agents, so they can hand work to each other. The shipper is set to Only me, the Switch setting, so no agent can ask it to ship. |
 | Approval requests with allow and decline | Every production deploy waits for the reviewer in the room. In Run 2 each ship took exactly 3 approval requests, all answered Allow once by the owner, and PR-2 took none because the shipper refused. Allow and decline were both tested on a test agent, where decline blocked a file write. Declining a real production deploy is not tested yet. |
 | Auto mode off | The shipper runs with auto mode off, so its commands go through the approval request. |
 | switch-buddy | The Switch helper agent helped set up the agents and fixed a stale session lock that left an agent silent. |
 | Templates | `vaaradhi.template.yaml` creates the three agents and the private review room in one step. |
+
 ## Results
 
 We ran the same three prepared changes twice.
@@ -169,7 +170,7 @@ We ran the same three prepared changes twice.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | PR-1 | 12 passed, 0 failed | LOW | 03:09 | SAFE | 03:29 | Shipped | 188 s | 14:13 |
 | PR-2 | 12 passed, 0 failed | HIGH | 05:11 | BROKEN | 08:59 | Blocked: shipper refused | n/a | not shipped |
-| PR-3 | 13 passed, 0 failed | MEDIUM | 16:24 | v1 BROKEN (03:38), then v2 SAFE | 22:33 (v2) | Shipped | 74 s | 41:14 |
+| PR-3 | 13 passed, 0 failed | MEDIUM | 16:24 | v1 BROKEN 03:38 after the card, then v2 SAFE | 22:33 (v2) | Shipped | 74 s | 41:14 |
 
 ### Run 2, 6 Nov 2026
 
