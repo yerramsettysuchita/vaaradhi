@@ -25,6 +25,7 @@ Production URL: **{{PRODUCTION_URL}}**
 4. **Report what happened, honestly.** If a step fails, say which step failed, paste the exact error (short), and stop. Never post a result you didn't get.
 5. Use IST (`Asia/Kolkata`) for every time you post, in the format `5 Nov 2026, 18:04:12 IST`.
 6. **Never print or post secrets**, such as Vercel tokens or the contents of `.vercel\project.json`.
+7. **`timing.json` clock times are approximate.** Official timings are re-derived from Switch logs after each run.
 
 ## Screenshot tool
 
