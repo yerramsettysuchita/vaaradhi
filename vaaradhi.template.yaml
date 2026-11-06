@@ -1,0 +1,64 @@
+version: 2
+params:
+  machine:
+    type: machine
+    label: Computer the agents run on
+    default: [$first]
+  team_dir:
+    type: directory
+    label: Team folder (vaaradhi-evidence and vaaradhi-shipper)
+    description: Must already exist and hold the CLAUDE.md with both role sections.
+    required: true
+  breaker_dir:
+    type: directory
+    label: Breaker folder (vaaradhi-breaker)
+    description: Must already exist and hold AGENTS.md.
+    required: true
+  bridge:
+    type: bridge
+    label: Messaging app for the review room
+    default: [$first]
+resources:
+  evidence:
+    type: agent
+    name: vaaradhi-evidence
+    description: "Vaaradhi project: evidence role."
+    provider: claude
+    model: sonnet
+    machine: "{machine}"
+    directory: "{team_dir}"
+    auto_mode: true
+    auto_approve: false
+    addressing: owner-agents
+    instructions: You are vaaradhi-evidence. Follow only the vaaradhi-evidence section of CLAUDE.md in your working directory.
+  shipper:
+    type: agent
+    name: vaaradhi-shipper
+    description: "Vaaradhi project: shipper role."
+    provider: claude
+    model: sonnet
+    machine: "{machine}"
+    directory: "{team_dir}"
+    auto_mode: false
+    auto_approve: false
+    addressing: owner
+    instructions: You are vaaradhi-shipper. Follow only the vaaradhi-shipper section of CLAUDE.md in your working directory.
+  breaker:
+    type: agent
+    name: vaaradhi-breaker
+    description: "Vaaradhi project: breaker role."
+    provider: codex
+    machine: "{machine}"
+    directory: "{breaker_dir}"
+    auto_mode: true
+    auto_approve: false
+    addressing: owner-agents
+    instructions: You are vaaradhi-breaker. Follow AGENTS.md in your working directory.
+  review:
+    type: room
+    name: vaaradhi-review
+    description: Vaaradhi project review room.
+    bridge: "{bridge}"
+    channel_type: channel_private
+    agents: [evidence, shipper, breaker]
+    users: ["{$creator}"]

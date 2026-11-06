@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Vercel project links (account and project IDs)
+.vercel/
+
+# Local run archives and working copies
+runs/
+demo-site/
+deploy-test/
+lab/
+
+# Temp folders (Playwright and Chrome)
+.tmp/
+
+# Secrets
+.env
+.env.*
+
+# Evidence screenshots
+**/evidence/**/*.png
+**/shots/**/*.png

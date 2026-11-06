@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShipFest 2026 · Online Hackathon</title>
+  <meta name="description" content="ShipFest 2026 is a 48-hour online hackathon. Submissions close 7 Nov 2026, 11:59 PM IST.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span>ShipFest 2026</a>
+      <nav aria-label="Main">
+        <ul class="nav-list">
+          <li><a href="#tracks">Tracks</a></li>
+          <li><a href="#rules">Rules</a></li>
+          <li><a href="#submit">Submit</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">Online hackathon · 5–7 Nov 2026</p>
+        <h1>ShipFest 2026</h1>
+        <p class="lede">48 hours to build something people can actually use. Ship it, demo it, and put it in front of judges from across the industry.</p>
+
+        <div class="countdown" data-countdown role="timer" aria-label="Time left to submit">
+          <div class="countdown-unit">
+            <span class="countdown-value" data-unit="days">0</span>
+            <span class="countdown-label">Days</span>
+          </div>
+          <div class="countdown-unit">
+            <span class="countdown-value" data-unit="hours">00</span>
+            <span class="countdown-label">Hours</span>
+          </div>
+          <div class="countdown-unit">
+            <span class="countdown-value" data-unit="minutes">00</span>
+            <span class="countdown-label">Minutes</span>
+          </div>
+          <div class="countdown-unit">
+            <span class="countdown-value" data-unit="seconds">00</span>
+            <span class="countdown-label">Seconds</span>
+          </div>
+        </div>
+        <p class="deadline-note" data-countdown-status>Submissions close 7 Nov 2026, 11:59 PM IST</p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary hero-cta" href="#submit">Submit Project</a>
+          <a class="text-link" href="#rules">Read the rules</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="tracks" class="section">
+      <div class="container">
+        <h2>Tracks and prizes</h2>
+        <p class="section-lede">Choose one track when you submit. Every eligible project is judged, and each track has one winner.</p>
+        <ul class="track-grid">
+          <li class="card track">
+            <p class="card-kicker">Track 1</p>
+            <h3>Developer Tools</h3>
+            <p>Tools that make building, testing or shipping software faster.</p>
+            <p class="prize">₹1,00,000</p>
+          </li>
+          <li class="card track">
+            <p class="card-kicker">Track 2</p>
+            <h3>AI for Good</h3>
+            <p>Projects that use AI to help a real community with a real problem.</p>
+            <p class="prize">₹75,000</p>
+          </li>
+          <li class="card track">
+            <p class="card-kicker">Track 3</p>
+            <h3>Open Track</h3>
+            <p>Anything you're excited to ship. Surprise us.</p>
+            <p class="prize">₹50,000</p>
+          </li>
+        </ul>
+        <p class="fineprint">Plus ₹10,000 for the best first-time team, chosen across all tracks.</p>
+      </div>
+    </section>
+
+    <section id="rules" class="section section-alt">
+      <div class="container narrow">
+        <h2>Rules</h2>
+        <ol class="rules">
+          <li><strong>Teams of up to 4 people.</strong> Solo entries are welcome.</li>
+          <li><strong>Build during the event</strong>, from 5 Nov 00:00 IST to 7 Nov 23:59 IST. Existing libraries and APIs are fine.</li>
+          <li><strong>Submit a public repository</strong> with a README that explains how to run your project.</li>
+          <li><strong>One submission per team.</strong> You can update it until the deadline.</li>
+          <li><strong>No late submissions.</strong> The countdown above is the official clock.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="submit" class="section">
+      <div class="container narrow">
+        <h2>Submit your project</h2>
+        <p class="section-lede">It takes a minute. You can resubmit until the deadline.</p>
+
+        <form id="submit-form" class="card form" novalidate>
+          <div class="field">
+            <label for="teamName">Team name</label>
+            <input id="teamName" name="teamName" type="text" autocomplete="organization" maxlength="60" aria-describedby="teamName-error">
+            <p class="field-error" id="teamName-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="memberCount">Number of members</label>
+            <input id="memberCount" name="memberCount" type="number" inputmode="numeric" min="1" max="4" step="1" aria-describedby="memberCount-hint memberCount-error">
+            <p class="field-hint" id="memberCount-hint">Up to 4 people.</p>
+            <p class="field-error" id="memberCount-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="email">Contact email</label>
+            <input id="email" name="email" type="email" autocomplete="email" aria-describedby="email-error">
+            <p class="field-error" id="email-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="repoUrl">Repository URL</label>
+            <input id="repoUrl" name="repoUrl" type="url" inputmode="url" placeholder="https://github.com/your-team/your-project" aria-describedby="repoUrl-error">
+            <p class="field-error" id="repoUrl-error" aria-live="polite"></p>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Send submission</button>
+        </form>
+
+        <div id="submit-confirmation" class="card confirmation" role="status" tabindex="-1" hidden>
+          <p class="confirmation-icon" aria-hidden="true">✓</p>
+          <h3>Submission received</h3>
+          <p><strong data-confirm-team></strong> is in the judging queue. We'll contact you at <strong data-confirm-email></strong> if anything is missing.</p>
+          <button type="button" class="btn btn-secondary" data-submit-another>Submit another project</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>ShipFest 2026 · Made for builders.</p>
+      <p class="fineprint">ShipFest is a fictional event used to demo Vaaradhi.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
