@@ -1,4 +1,4 @@
-# Vaaradhi
+﻿# Vaaradhi
 
 **Reviewers check proof instead of reading AI-written diffs.**
 
@@ -361,9 +361,10 @@ powershell -ExecutionPolicy Bypass -File .\reset-all.ps1 -AgentsRoot C:\Vaaradhi
 
 ## Demo and blog
 
-- Demo video: _link coming soon_
-- Blog post: _link coming soon_
+- Demo video: https://youtu.be/qFzHxSpYTMI
+- Blog post: https://dev.to/yerramsettysuchita/all-12-tests-passed-and-the-bug-was-still-there-what-i-learned-building-an-ai-review-room-with-2id
 
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
