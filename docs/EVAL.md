@@ -2,7 +2,7 @@
 
 ## Method
 
-- **Source of every timing:** Switch server and session logs on this computer, read (read only) by switch-buddy on 6 Nov 2026. All times are IST.
+- **Source of every Run 1 and Run 2 timing:** Switch server and session logs on this computer, read (read only) by switch-buddy on 6 Nov 2026. All times are IST. Run 3 timings are agent-reported and not log-verified (see Run 3).
   - **Room inbox (server time):** the review and ship messages from the human.
   - **Agent session logs:** the time each agent's post to the room completed. The server time is a fraction of a second earlier.
 - **Calculation:** durations are computed by script and rounded to the nearest second.
@@ -91,6 +91,28 @@
 
 ---
 
+## Run 3: 7 Nov 2026
+
+**Setup:** a fresh room, `vaaradhi-run3`. The same agents as Run 2, unchanged. PR-1 was not run in Run 3.
+
+**Timings are agent-reported and not log-verified.** They were not re-derived from Switch logs because of time. In Run 2, agent-recorded clock times were off by up to 27.9 seconds, so treat these as approximate.
+
+| PR | Tests | Evidence risk | Evidence time (agent-reported) | Breaker verdict | Breaker working time (self-reported) | Outcome | Human decision (agent-reported) | Review to live (agent-reported) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| PR-1 | not run | | | | | | | |
+| PR-2 | 12 passed, 0 failed | HIGH | 01:41 | BROKEN | 01:40 | Blocked: shipper refused | n/a | not shipped |
+| PR-3 | 13 passed, 0 failed | MEDIUM | 01:07 | SAFE (Minor notes: none) | 02:10 | Shipped | 70 s | 06:25 |
+
+### Run 3 notes
+
+1. **PR-2 evidence finding:** at 8:00 PM IST, a New York visitor sees 3h 59m on production and 14h 29m on the PR-2 preview.
+2. **PR-2 breaker verdict:** BROKEN. At the same frozen instant, it showed the New York preview at 14h 29m versus production at 3h 59m, and the UTC preview at 9h 29m.
+3. **`ship PR-2`:** refused by the shipper, quoting the BROKEN verdict.
+4. **PR-3:** the evidence card found that the claim matches the change. The breaker said SAFE with Minor notes: none, and PR-3 shipped.
+5. **No failed tool calls:** the breaker's room summaries in Run 3 show none, unlike PR-1 in Run 2. This supports the `shots\.tmp` temp-folder fix.
+
+---
+
 ## Run 1 vs Run 2
 
 | Measure | Run 1 (5 Nov) | Run 2 (6 Nov) |
@@ -116,7 +138,8 @@
    - The shipper instructions and `shot.js` were improved between runs.
 
    These effects can't be separated with two runs.
-5. **The test suite never caught PR-2 in either run.** The evidence card and the breaker caught it.
+5. **The test suite never caught PR-2 in any run.** It passed all 12 tests in Runs 1, 2 and 3. The evidence card and the breaker caught it.
+6. **Run 3 used the same agents with no changes.** The evidence agent found the PR-2 bug at a different moment than in Run 2 (8:00 PM IST instead of the deadline itself), which shows the check is not scripted.
 
 ---
 

@@ -6,10 +6,10 @@ Vaaradhi is a Switch room with three agents. One runs each AI-written change and
 
 ## At a glance
 
-- **Planted broken change (PR-2):** caught in both runs, out of 3 prepared changes
+- **Planted broken change (PR-2):** caught in all 3 runs, out of 3 prepared changes
 - **Broken changes shipped:** 0
 - **Tests that caught PR-2:** 0 of 12
-- **False alarms:** 1 in Run 1, 0 in Run 2
+- **False alarms:** 1 in Run 1, 0 in Runs 2 and 3
 - **Run 2 human decision time:** 72 to 140 seconds
 - **Run 2 review to live:** 5:29 to 9:08
 
@@ -180,12 +180,27 @@ We ran the same three prepared changes twice.
 | PR-2 | 12 passed, 0 failed | HIGH | 01:34 | BROKEN | 01:54 | Blocked: shipper refused, production unchanged | n/a | not shipped | 0 |
 | PR-3 | 13 passed, 0 failed | MEDIUM | 00:57 | SAFE (no false alarm) | 02:16 | Shipped | 72 s | 05:29 | 3 |
 
-Times are minutes and seconds, except human decision, which is in seconds. All timings come from Switch server and session logs.
+Times are minutes and seconds, except human decision, which is in seconds. All Run 1 and Run 2 timings come from Switch server and session logs.
 
 - **Evidence time:** from the review message to the evidence card.
 - **Card to verdict:** from the evidence card to the breaker's verdict post.
 - **Human decision:** from the final SAFE verdict to the reviewer's `ship PR-n` message.
 - **Review to live:** from the review message to the SHIPPED post.
+
+### Run 3, 7 Nov 2026
+
+Same agents as Run 2, unchanged, in a fresh room, `vaaradhi-run3`. PR-1 was not run.
+
+| PR | Tests | Evidence risk | Evidence time (agent-reported) | Breaker verdict | Breaker working time (self-reported) | Outcome | Human decision (agent-reported) | Review to live (agent-reported) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| PR-2 | 12 passed, 0 failed | HIGH | 01:41 | BROKEN | 01:40 | Blocked: shipper refused | n/a | not shipped |
+| PR-3 | 13 passed, 0 failed | MEDIUM | 01:07 | SAFE (Minor notes: none) | 02:10 | Shipped | 70 s | 06:25 |
+
+- **Run 3 timings are agent-reported and not log-verified.** They were not re-derived from Switch logs because of time. In Run 2, agent-recorded clock times were off by up to 27.9 seconds, so treat these as approximate.
+- **PR-2 evidence:** at 8:00 PM IST, a New York visitor sees 3h 59m on production and 14h 29m on the PR-2 preview.
+- **PR-2 breaker:** BROKEN. At the same frozen instant, it showed the New York preview at 14h 29m versus production at 3h 59m, and the UTC preview at 9h 29m.
+- **`ship PR-2`:** the shipper refused, quoting the BROKEN verdict.
+- **PR-3:** the claim matched the change, the breaker said SAFE with Minor notes: none, and PR-3 shipped.
 
 ### Run 1 compared with Run 2
 
@@ -202,9 +217,10 @@ Times are minutes and seconds, except human decision, which is in seconds. All t
 
 ### What the numbers do and do not show
 
-- **The tests never caught PR-2.** It passed all 12 tests in both runs. The evidence card and the breaker caught it, and the shipper refused to ship it.
+- **The tests never caught PR-2.** It passed all 12 tests in all three runs. The evidence card and the breaker caught it, and the shipper refused to ship it.
+- **Run 3 shows the check is not scripted.** Run 3 used the same agents with no changes, and the evidence agent found the PR-2 bug at a different moment than in Run 2: at 8:00 PM IST instead of the deadline itself.
 - **In Run 1 the human asked to ship PR-2 before any verdict existed.** The `ship PR-2` message came at 19:03:26. The shipper held at 19:03:45 because there was no verdict yet, and it refused after the BROKEN verdict.
-- **Timings come from Switch logs, not the agents' clocks.** The times agents wrote down were off by up to 27.9 seconds in Run 2 and 42.9 seconds in Run 1. Every timing above was re-derived from Switch server and session logs.
+- **Timings come from Switch logs, not the agents' clocks.** The times agents wrote down were off by up to 27.9 seconds in Run 2 and 42.9 seconds in Run 1. Every Run 1 and Run 2 timing was re-derived from Switch server and session logs. Run 3 timings were not.
 - **Card to verdict includes the handoff.** It covers the handoff, the breaker's session starting and its work. In Run 2 the breaker posted its screenshots and its verdict as two separate posts; we use the verdict post.
 - **Human decision time includes reading** the evidence card and the breaker's verdict, not only typing `ship PR-n`.
 - **Run 1's PR-3 times include a stuck agent session and a breaker re-run,** so the drop from 41:14 to 05:29 overstates the normal improvement.
@@ -332,7 +348,7 @@ powershell -ExecutionPolicy Bypass -File .\reset-all.ps1 -AgentsRoot C:\Vaaradhi
 - **The screenshot script cannot type.** It sets screen size, timezone, locale and clock, and saves screenshots. Form edge cases are checked by reasoning from the form's HTML and validation code, and the breaker says so.
 - **One laptop.** Everything was tested on one Windows laptop. Approval from a phone or through Telegram was not tested.
 - **The first breaker over-flagged.** In Run 1 it marked PR-3 BROKEN over a 17-digit decimal no real user would type. A severity rubric and reading the form's input constraints fixed it: no false alarms in Run 2, and PR-2 was still caught.
-- **Codex sandbox.** The breaker's browser was first blocked with `net::ERR_NETWORK_ACCESS_DENIED`. The `network_access` setting in step 4 fixed it. A later Windows temp-file permission error was fixed by keeping temp files in the breaker's `shots` folder.
+- **Codex sandbox.** The breaker's browser was first blocked with `net::ERR_NETWORK_ACCESS_DENIED`. The `network_access` setting in step 4 fixed it. A later Windows temp-file permission error was fixed by keeping temp files in the breaker's `shots` folder. Run 3 showed no failed tool calls for the breaker.
 - **Slow restart.** After restarting Switch Console the local server took a few minutes to come back. Waiting for `!list-agents` to reply became the ready check.
 - **Stale session lock.** After Switch Console quit, Windows reused a process number, so an old session lock looked alive and the evidence agent retried silently every 2 minutes. switch-buddy renamed the lock note to fix it. This matches the root cause discussed in [Switch issue #1544](https://github.com/sandbox-quantum/switch/issues/1544), where Windows reused a recorded process id. In our case the reused process id belonged to another Switch agent's own host, not a protected process, so treating only EPERM as stale would not catch it. Checking process identity, not just whether the id is alive, would.
 - **Invisible approval wait.** Switch holds the approval outside the agent, so the shipper never sees the wait. It wrongly concluded its deploy had skipped approval; its instructions now say so explicitly.
